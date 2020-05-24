@@ -7,7 +7,8 @@ import os
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="D:\key.json"
 
 import re
-from langdetect import detect
+# from langdetect import detect
+import langid # higher accuracy than langdetect, can select from desired languages
 
 def t2s(lang, text, filename):
         # Instantiates a client
@@ -16,11 +17,16 @@ def t2s(lang, text, filename):
         # Set the text input to be synthesized
         synthesis_input = texttospeech.types.SynthesisInput(text=text)
 
-        # Build the voice request, select the language code ("en-US") and the ssml
-        # voice gender ("neutral")
-        voice = texttospeech.types.VoiceSelectionParams(
-            language_code=lang,
-            ssml_gender=texttospeech.enums.SsmlVoiceGender.NEUTRAL)
+        # Build the voice request, select the language code ("en-US") and the voice type
+        # https://cloud.google.com/text-to-speech/docs/voices
+        if lang == "en":
+            voice = texttospeech.types.VoiceSelectionParams(
+                language_code="en-US",
+                name='en-US-Wavenet-C')
+        elif lang == "zh":
+            voice = texttospeech.types.VoiceSelectionParams(
+                language_code="cmn-CN",
+                name = 'cmn-CN-Wavenet-A')
 
         # Select the type of audio file you want returned
         audio_config = texttospeech.types.AudioConfig(
@@ -36,27 +42,35 @@ def t2s(lang, text, filename):
             out.write(response.audio_content)
             print('Audio content written to file "'+filename+'.mp3"') 
 
-# 读取文本
-# 分割段落
-# 识别中英文
-# 每段转为语音
-# 合并语音文件
-# 删除多余文件
+# Logic:
+# Read file text 
+# Split paragraph
+# Recognize language
+# Turn each paragraph into speech
+# Merge voice files
+# Delete temporary files
 if __name__ == "__main__":
     
     p=re.compile('\n',re.S)
-    fileContent=open('test2.txt','r',encoding='utf8').read()#读文件内容
-    paraList=p.split(fileContent) #根据换行符对文本进行切片
+    fileContent=open('test.txt','r',encoding='utf8').read() # Read file text
+    paraList=p.split(fileContent) # split the text by line break
 
+    for paraIndex in range(len(paraList)): # traverse the sliced text list
+        langid.set_languages(['zh', 'en']) # ISO 639-1 codes, set language pool
+        lang, score = langid.classify(paraList[paraIndex]) # recognize language
+        
+        if lang == "en" or lang == "zh":
+            # text to speech, save each paragraph as a single .mp3 file
+            t2s(lang, paraList[paraIndex], str(paraIndex))
+        else: 
+            # if something wrong, write the text to file to check
+            # print(paraList[paraIndex], lang, score)
+            fileWriter=open(str(paraIndex)+'.txt','a',encoding='utf8')
+            fileWriter.write(paraList[paraIndex]) 
+            fileWriter.close() 
 
-    for paraIndex in range(len(paraList)):#遍历切片后的文本列表
-        lang = detect(paraList[paraIndex])
-        t2s(lang, paraList[paraIndex], str(paraIndex))
-
-    # fileWriter=open(str(paraIndex)+'.txt','a',encoding='utf8')#创建一个写文件的句柄
-    # fileWriter.write(paraList[paraIndex])#先将列表中元素写入文件中
-    # fileWriter.close() #关闭当前句柄
-
+    # Merge all .mp3 files into a single one
+    # Delete temporary .mp3 files
     mp3_write = open('all.mp3', 'wb')
     for paraIndex in range(len(paraList)):
         f_read = open(str(paraIndex)+'.mp3', 'rb')
