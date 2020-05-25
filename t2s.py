@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
     # Merge all .mp3 files into a single one
     # Delete temporary .mp3 files
-    mp3_write = open('all.mp3', 'wb')
+    mp3_write = open('test.mp3', 'wb')
     for paraIndex in range(len(paraList)):
         f_read = open(str(paraIndex)+'.mp3', 'rb')
         mp3_write.write(f_read.read())
