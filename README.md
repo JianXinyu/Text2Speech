@@ -13,7 +13,7 @@ Windows10, Python 3.7
   os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="[Your directory of JSON file]"
   ```
   at the head of code.
-  - Run the code!
+- Run the code!
   
   ## About the text
   - The text should be .txt file. 
