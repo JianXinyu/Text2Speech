@@ -15,12 +15,12 @@ Windows10, Python 3.7
   at the head of code.
 - Run the code!
   
-  ## About the text
+## About the text
   - The text should be .txt file. 
   - Different languages must be seperated by paragraphs, i.e. '\n'. 
   - Different languages can appear alternately in the text. 
   - Import your own file at Line55.
-  
-  ## About the speech
+
+## About the speech
   - The output format is .mp3
   - Change the output .mp3 file name at Line74
