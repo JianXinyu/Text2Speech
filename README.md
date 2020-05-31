@@ -13,7 +13,8 @@ Windows10, Python 3.7
   os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="[Your directory of JSON file]"
   ```
   at the head of code.
-- Run the code!
+- Run t2s.py
+- You can customize your languages and voices!
   
 ## About the text
   - The text should be .txt file. 
@@ -24,3 +25,4 @@ Windows10, Python 3.7
 ## About the speech
   - The output format is .mp3
   - Change the output .mp3 file name at Line74
+  
