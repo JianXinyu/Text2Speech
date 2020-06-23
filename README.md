@@ -5,7 +5,7 @@ Transform multi-language text into speech using Google Cloud Text-To-Speech API.
 Windows10, Python 3.7
 
 ## Set-up
-- Make sure you have deploy a Cloud project, set up authentication, install the cloud SDK and the client library following the [link](https://cloud.google.com/text-to-speech/docs/quickstart-client-libraries).
+- Make sure you have deployed a Cloud project, set up authentication, install the cloud SDK and the client library following the [link](https://cloud.google.com/text-to-speech/docs/quickstart-client-libraries).
 - [Optional] You can try these [demo](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/texttospeech/cloud-client) provided by google to test your set up. 
 - Perhaps your authentication doesn't work. Include
   ```
